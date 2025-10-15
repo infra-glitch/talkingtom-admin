@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { supabase, storage, db } from '@/lib/supabase'
-import { v4 as uuidv4 } from 'uuid'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -9,9 +8,7 @@ export async function POST(request) {
   try {
     const formData = await request.formData()
     const pdfFile = formData.get('pdf')
-    const bookId = formData.get('bookId')
-    const lessonNumber = formData.get('lessonNumber')
-    const lessonName = formData.get('lessonName')
+    const lessonId = formData.get('lessonId')
 
     if (!pdfFile) {
       return NextResponse.json(
@@ -20,31 +17,21 @@ export async function POST(request) {
       )
     }
 
-    if (!bookId || !lessonNumber || !lessonName) {
+    if (!lessonId) {
       return NextResponse.json(
-        { error: 'Missing required fields: bookId, lessonNumber, or lessonName' },
+        { error: 'Lesson ID is required' },
         { status: 400 }
       )
     }
 
-    // Generate unique lesson ID
-    const lessonId = uuidv4()
-
-    // Create lesson record in database
-    const lessonData = {
-      id: lessonId,
-      book_id: bookId,
-      lesson_number: parseInt(lessonNumber),
-      name: lessonName,
-      thumbnail: '',
-      slug: lessonName.toLowerCase().replace(/\s+/g, '-'),
-      num_topics: 0,
-      status: 'uploading',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+    // Verify lesson exists
+    const lesson = await db.getLessonById(parseInt(lessonId))
+    if (!lesson) {
+      return NextResponse.json(
+        { error: 'Lesson not found' },
+        { status: 404 }
+      )
     }
-
-    const lesson = await db.createLesson(lessonData)
 
     // Upload PDF to Supabase Storage
     try {
@@ -53,29 +40,15 @@ export async function POST(request) {
       
       await storage.uploadPDF(pdfBlob, lessonId)
       
-      // Update lesson status
-      await db.updateLesson(lessonId, {
-        status: 'uploaded',
-        pdf_url: storage.getPublicUrl('lesson-pdfs', `lessons/${lessonId}/original.pdf`)
+      // Update lesson with PDF URL
+      const pdfUrl = storage.getPublicUrl('lesson-pdfs', `lessons/${lessonId}/original.pdf`)
+      await db.updateLesson(parseInt(lessonId), {
+        thumbnail: pdfUrl // Store PDF URL in thumbnail for now
       })
     } catch (storageError) {
       console.error('Storage error:', storageError)
-      await db.updateLesson(lessonId, { status: 'upload_failed' })
       throw storageError
     }
-
-    // Create processing job
-    const jobData = {
-      id: uuidv4(),
-      lesson_id: lessonId,
-      status: 'pending',
-      stage: 'queued',
-      progress: 0,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-
-    await db.createProcessingJob(jobData)
 
     return NextResponse.json({
       success: true,
