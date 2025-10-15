@@ -59,13 +59,17 @@
    - **Client Secret**: Paste the Client Secret from Google Cloud Console
 2. Click **Save**
 
-### 2.3 Configure Site URL
+### 2.3 Configure Site URL and Redirect URLs
 
 1. Go to **Authentication** → **URL Configuration**
 2. Set **Site URL**: `http://localhost:3000` (or your production URL)
-3. Add **Redirect URLs**:
+3. Add **Redirect URLs** (IMPORTANT - Add all of these):
+   - `http://localhost:3000/admin`
    - `http://localhost:3000/auth/callback`
-   - Your production callback URL
+   - `http://0.0.0.0:3000/admin`
+   - Your production URLs when deploying
+
+**Note**: The OAuth flow will redirect to `/admin` with tokens in the URL hash. The application will automatically extract and store these tokens.
 
 ## Step 3: Test the Authentication Flow
 
