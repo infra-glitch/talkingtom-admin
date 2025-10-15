@@ -1,14 +1,17 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Loader2, Plus, School, BookOpen, Library, FileText } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 export default function AdminDashboard() {
+  const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState({
     schools: [],
@@ -20,6 +23,21 @@ export default function AdminDashboard() {
   })
 
   useEffect(() => {
+    // Handle auth tokens in URL hash (from OAuth redirect)
+    const handleAuthHash = async () => {
+      const hash = window.location.hash
+      if (hash && hash.includes('access_token')) {
+        // Extract the session from the URL hash
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (error) {
+          console.error('Error getting session from hash:', error)
+        }
+        // Clean up the URL
+        window.history.replaceState({}, document.title, window.location.pathname)
+      }
+    }
+
+    handleAuthHash()
     fetchAllData()
   }, [])
 
