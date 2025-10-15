@@ -5,21 +5,22 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, Upload, Book, FileText, CheckCircle, AlertCircle, Clock } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Loader2, Plus, School, BookOpen, GraduationCap, Library, FileText } from 'lucide-react'
 
 export default function AdminDashboard() {
-  const [lessons, setLessons] = useState([])
-  const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState({
-    total: 0,
-    completed: 0,
-    processing: 0,
-    pending: 0
+  const [data, setData] = useState({
+    schools: [],
+    curriculums: [],
+    grades: [],
+    subjects: [],
+    books: [],
+    lessons: []
   })
 
   useEffect(() => {
-    fetchData()
+    fetchAllData()
   }, [])
 
   const fetchData = async () => {
