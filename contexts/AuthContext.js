@@ -23,8 +23,24 @@ export const AuthProvider = ({ children }) => {
     // Check active session
     const checkSession = async () => {
       try {
-        const session = await auth.getSession()
-        setUser(session?.user ?? null)
+        // First try to get session from URL hash (OAuth redirect)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const accessToken = hashParams.get('access_token')
+        const refreshToken = hashParams.get('refresh_token')
+
+        if (accessToken) {
+          // Set the session from hash params
+          const { data: { session }, error } = await auth.getSession()
+          if (!error && session) {
+            setUser(session.user)
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname)
+          }
+        } else {
+          // Normal session check
+          const session = await auth.getSession()
+          setUser(session?.user ?? null)
+        }
       } catch (error) {
         console.error('Error checking session:', error)
       } finally {
@@ -40,6 +56,10 @@ export const AuthProvider = ({ children }) => {
       setLoading(false)
 
       if (event === 'SIGNED_IN') {
+        // Clean up URL if it has hash params
+        if (window.location.hash) {
+          window.history.replaceState({}, document.title, window.location.pathname)
+        }
         router.push('/admin')
       } else if (event === 'SIGNED_OUT') {
         router.push('/login')
