@@ -371,20 +371,22 @@ export default function SetupWizard() {
               {/* Grade */}
               <div className="space-y-2">
                 <Label>Grade</Label>
-                {grades.length > 0 && (
-                  <Select value={formData.gradeId} onValueChange={(v) => updateFormData('gradeId', v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select existing grade" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {grades.map((grade) => (
+                <Select value={formData.gradeId} onValueChange={(v) => updateFormData('gradeId', v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={grades.length > 0 ? "Select existing grade" : "No grades available - create new below"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {grades.length > 0 ? (
+                      grades.map((grade) => (
                         <SelectItem key={grade.id} value={grade.id.toString()}>
                           {grade.grade}
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                      ))
+                    ) : (
+                      <div className="p-2 text-sm text-muted-foreground">No grades available</div>
+                    )}
+                  </SelectContent>
+                </Select>
                 <p className="text-sm text-muted-foreground">Or create new:</p>
                 <Input
                   placeholder="Grade (e.g., 1, 2, 10)"
