@@ -408,20 +408,22 @@ export default function SetupWizard() {
 
               <div className="space-y-2">
                 <Label>Book</Label>
-                {books.length > 0 && (
-                  <Select value={formData.bookId} onValueChange={(v) => updateFormData('bookId', v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select existing book" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {books.map((book) => (
+                <Select value={formData.bookId} onValueChange={(v) => updateFormData('bookId', v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={books.length > 0 ? "Select existing book" : "No books available - create new below"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {books.length > 0 ? (
+                      books.map((book) => (
                         <SelectItem key={book.id} value={book.id.toString()}>
                           {book.title} {book.author && `- ${book.author}`}
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                      ))
+                    ) : (
+                      <div className="p-2 text-sm text-muted-foreground">No books available</div>
+                    )}
+                  </SelectContent>
+                </Select>
                 <p className="text-sm text-muted-foreground">Or create new:</p>
                 <Input
                   placeholder="Book Title"
