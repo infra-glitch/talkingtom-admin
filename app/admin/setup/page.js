@@ -309,20 +309,22 @@ export default function SetupWizard() {
               {/* School */}
               <div className="space-y-2">
                 <Label>School</Label>
-                {schools.length > 0 && (
-                  <Select value={formData.schoolId} onValueChange={(v) => updateFormData('schoolId', v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select existing school" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {schools.map((school) => (
+                <Select value={formData.schoolId} onValueChange={(v) => updateFormData('schoolId', v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={schools.length > 0 ? "Select existing school" : "No schools available - create new below"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {schools.length > 0 ? (
+                      schools.map((school) => (
                         <SelectItem key={school.id} value={school.id.toString()}>
                           {school.name}
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                      ))
+                    ) : (
+                      <div className="p-2 text-sm text-muted-foreground">No schools available</div>
+                    )}
+                  </SelectContent>
+                </Select>
                 <p className="text-sm text-muted-foreground">Or create new:</p>
                 <Input
                   placeholder="School Name"
