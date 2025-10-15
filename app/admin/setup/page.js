@@ -343,20 +343,22 @@ export default function SetupWizard() {
               {/* Curriculum */}
               <div className="space-y-2">
                 <Label>Curriculum</Label>
-                {curriculums.length > 0 && (
-                  <Select value={formData.curriculumId} onValueChange={(v) => updateFormData('curriculumId', v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select existing curriculum" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {curriculums.map((curriculum) => (
+                <Select value={formData.curriculumId} onValueChange={(v) => updateFormData('curriculumId', v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={curriculums.length > 0 ? "Select existing curriculum" : "No curriculums available - create new below"} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {curriculums.length > 0 ? (
+                      curriculums.map((curriculum) => (
                         <SelectItem key={curriculum.id} value={curriculum.id.toString()}>
                           {curriculum.name}
                         </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                      ))
+                    ) : (
+                      <div className="p-2 text-sm text-muted-foreground">No curriculums available</div>
+                    )}
+                  </SelectContent>
+                </Select>
                 <p className="text-sm text-muted-foreground">Or create new:</p>
                 <Input
                   placeholder="Curriculum Name (e.g., CBSE, ICSE)"
