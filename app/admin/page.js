@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Loader2, Plus, School, BookOpen, GraduationCap, Library, FileText } from 'lucide-react'
+import { Loader2, Plus, School, BookOpen, Library, FileText } from 'lucide-react'
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
@@ -23,63 +23,32 @@ export default function AdminDashboard() {
     fetchAllData()
   }, [])
 
-  const fetchData = async () => {
+  const fetchAllData = async () => {
     try {
       setLoading(true)
       
-      // Fetch books
-      const booksRes = await fetch('/api/books')
-      const booksData = await booksRes.json()
-      setBooks(booksData.books || [])
+      const [schools, curriculums, grades, subjects, books, lessons] = await Promise.all([
+        fetch('/api/schools').then(r => r.json()),
+        fetch('/api/curriculums').then(r => r.json()),
+        fetch('/api/grades').then(r => r.json()),
+        fetch('/api/subjects').then(r => r.json()),
+        fetch('/api/books').then(r => r.json()),
+        fetch('/api/lessons').then(r => r.json())
+      ])
 
-      // Fetch lessons
-      const lessonsRes = await fetch('/api/lessons')
-      const lessonsData = await lessonsRes.json()
-      const lessonsList = lessonsData.lessons || []
-      setLessons(lessonsList)
-
-      // Calculate stats
-      const stats = {
-        total: lessonsList.length,
-        completed: lessonsList.filter(l => l.status === 'completed').length,
-        processing: lessonsList.filter(l => l.status === 'processing').length,
-        pending: lessonsList.filter(l => l.status === 'pending' || l.status === 'uploaded').length
-      }
-      setStats(stats)
+      setData({
+        schools: schools.schools || [],
+        curriculums: curriculums.curriculums || [],
+        grades: grades.grades || [],
+        subjects: subjects.subjects || [],
+        books: books.books || [],
+        lessons: lessons.lessons || []
+      })
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
       setLoading(false)
     }
-  }
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
-      case 'processing':
-        return <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
-      case 'failed':
-        return <AlertCircle className="h-4 w-4 text-red-500" />
-      default:
-        return <Clock className="h-4 w-4 text-yellow-500" />
-    }
-  }
-
-  const getStatusBadge = (status) => {
-    const variants = {
-      completed: 'default',
-      processing: 'secondary',
-      failed: 'destructive',
-      pending: 'outline',
-      uploaded: 'outline'
-    }
-
-    return (
-      <Badge variant={variants[status] || 'outline'} className="capitalize">
-        {status}
-      </Badge>
-    )
   }
 
   if (loading) {
@@ -97,13 +66,13 @@ export default function AdminDashboard() {
         <div>
           <h1 className="text-3xl font-bold">Lesson Digitization Admin</h1>
           <p className="text-muted-foreground mt-1">
-            Manage PDF uploads and digitization pipeline
+            Manage schools, curriculum, books, and lessons
           </p>
         </div>
-        <Link href="/admin/upload">
+        <Link href="/admin/setup">
           <Button size="lg">
-            <Upload className="mr-2 h-5 w-5" />
-            Upload New Lesson
+            <Plus className="mr-2 h-5 w-5" />
+            Complete Setup
           </Button>
         </Link>
       </div>
@@ -112,148 +81,179 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Lessons</CardTitle>
+            <CardTitle className="text-sm font-medium">Schools</CardTitle>
+            <School className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{data.schools.length}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Books</CardTitle>
+            <BookOpen className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{data.books.length}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Subjects</CardTitle>
+            <Library className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{data.subjects.length}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Lessons</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.total}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.completed}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Processing</CardTitle>
-            <Loader2 className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.processing}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.pending}</div>
+            <div className="text-2xl font-bold">{data.lessons.length}</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Books Section */}
+      {/* Workflow Guide */}
+      {data.schools.length === 0 && (
+        <Card className="border-blue-200 bg-blue-50">
+          <CardHeader>
+            <CardTitle className="text-lg">Get Started - Complete Setup</CardTitle>
+            <CardDescription>
+              Follow these steps to set up your lesson digitization:
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ol className="list-decimal ml-6 space-y-2">
+              <li>Add a School, Curriculum, and Grade</li>
+              <li>Create a Book</li>
+              <li>Add a Subject (linking School, Curriculum, Grade, and Book)</li>
+              <li>Create Lessons for the Book</li>
+              <li>Upload PDF for each Lesson</li>
+            </ol>
+            <Link href="/admin/setup">
+              <Button className="mt-4">
+                <Plus className="mr-2 h-4 w-4" />
+                Start Setup Wizard
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Data Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Lessons</CardTitle>
+            <CardDescription>Latest lessons added to the system</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data.lessons.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <FileText className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p>No lessons yet</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {data.lessons.slice(0, 5).map((lesson) => (
+                  <div
+                    key={lesson.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
+                    <div>
+                      <div className="font-medium text-sm">{lesson.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        Lesson {lesson.lesson_number}
+                      </div>
+                    </div>
+                    {lesson.thumbnail ? (
+                      <Badge variant="default" className="text-xs">PDF Ready</Badge>
+                    ) : (
+                      <Link href={`/admin/lessons/${lesson.id}/upload`}>
+                        <Button variant="outline" size="sm">Upload PDF</Button>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Books</CardTitle>
+            <CardDescription>All books in your library</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {data.books.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <BookOpen className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                <p>No books yet</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {data.books.map((book) => (
+                  <div
+                    key={book.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
+                    <div>
+                      <div className="font-medium text-sm">{book.title}</div>
+                      {book.author && (
+                        <div className="text-xs text-muted-foreground">{book.author}</div>
+                      )}
+                    </div>
+                    <Badge variant="outline">
+                      {data.lessons.filter(l => l.book_id === book.id).length} lessons
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Books</CardTitle>
-              <CardDescription>Manage your book collection</CardDescription>
-            </div>
+          <CardTitle>Quick Actions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Link href="/admin/setup">
+              <Button variant="outline" className="w-full">
+                <Plus className="mr-2 h-4 w-4" />
+                Setup Wizard
+              </Button>
+            </Link>
+            <Link href="/admin/lessons/new">
+              <Button variant="outline" className="w-full">
+                <FileText className="mr-2 h-4 w-4" />
+                New Lesson
+              </Button>
+            </Link>
             <Link href="/admin/books/new">
-              <Button variant="outline">
-                <Book className="mr-2 h-4 w-4" />
-                Add Book
+              <Button variant="outline" className="w-full">
+                <BookOpen className="mr-2 h-4 w-4" />
+                New Book
+              </Button>
+            </Link>
+            <Link href="/admin/subjects/new">
+              <Button variant="outline" className="w-full">
+                <Library className="mr-2 h-4 w-4" />
+                New Subject
               </Button>
             </Link>
           </div>
-        </CardHeader>
-        <CardContent>
-          {books.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <Book className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>No books yet. Create one to get started.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {books.map((book) => (
-                <Card key={book.id} className="hover:shadow-md transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{book.title}</CardTitle>
-                    {book.grade && (
-                      <CardDescription>
-                        Grade {book.grade} • {book.subject}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground">
-                      {lessons.filter(l => l.book_id === book.id).length} lessons
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Lessons List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Lessons</CardTitle>
-          <CardDescription>All uploaded lessons and their processing status</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {lessons.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <FileText className="h-16 w-16 mx-auto mb-4 opacity-50" />
-              <p className="text-lg mb-2">No lessons yet</p>
-              <p className="text-sm mb-4">Upload your first lesson PDF to get started</p>
-              <Link href="/admin/upload">
-                <Button>
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Lesson
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              {lessons.map((lesson) => (
-                <div
-                  key={lesson.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors"
-                >
-                  <div className="flex items-center gap-4 flex-1">
-                    {getStatusIcon(lesson.status)}
-                    <div className="flex-1">
-                      <div className="font-medium">{lesson.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        Lesson {lesson.lesson_number}
-                        {lesson.num_topics > 0 && ` • ${lesson.num_topics} topics`}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    {getStatusBadge(lesson.status)}
-                    {(lesson.status === 'processing' || lesson.status === 'uploaded') && (
-                      <Link href={`/admin/lessons/${lesson.id}/status`}>
-                        <Button variant="outline" size="sm">
-                          View Progress
-                        </Button>
-                      </Link>
-                    )}
-                    {lesson.status === 'completed' && (
-                      <Link href={`/admin/lessons/${lesson.id}`}>
-                        <Button variant="outline" size="sm">
-                          View Details
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
