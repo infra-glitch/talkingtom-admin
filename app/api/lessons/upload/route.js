@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { supabase, storage, db } from '@/lib/db'
+import { storage, db } from '@/lib/db'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
