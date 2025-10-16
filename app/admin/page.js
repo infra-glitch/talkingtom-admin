@@ -123,25 +123,73 @@ export default function AdminDashboard() {
       {data.schools.length === 0 && (
         <Card className="border-blue-200 bg-blue-50">
           <CardHeader>
-            <CardTitle className="text-lg">Get Started - Complete Setup</CardTitle>
+            <CardTitle className="text-lg">Get Started</CardTitle>
             <CardDescription>
-              Follow these steps to set up your lesson digitization:
+              Two-step process for lesson digitization
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ol className="list-decimal ml-6 space-y-2">
-              <li>Add a School, Curriculum, and Grade</li>
-              <li>Create a Book</li>
-              <li>Add a Subject (linking School, Curriculum, Grade, and Book)</li>
-              <li>Create Lessons for the Book</li>
-              <li>Upload PDF for each Lesson</li>
-            </ol>
-            <Link href="/admin/setup">
-              <Button className="mt-4">
-                <Plus className="mr-2 h-4 w-4" />
-                Start Setup Wizard
-              </Button>
-            </Link>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-semibold mb-2">Part 1: Setup (One-time per Subject)</h4>
+                <ol className="list-decimal ml-6 space-y-1 text-sm">
+                  <li>Create School, Curriculum, and Grade</li>
+                  <li>Create Book</li>
+                  <li>Create Subject (links School + Curriculum + Grade + Book)</li>
+                </ol>
+                <Link href="/admin/setup">
+                  <Button className="mt-3">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Start Setup Wizard
+                  </Button>
+                </Link>
+              </div>
+              
+              <div className="border-t pt-4">
+                <h4 className="font-semibold mb-2">Part 2: Add Lessons (Repeatable)</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  After setup, add lessons for any book and upload PDFs
+                </p>
+                <Link href="/admin/lessons/new">
+                  <Button variant="outline">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Add New Lesson
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
+      {/* Quick Actions for existing users */}
+      {data.schools.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <Link href="/admin/setup">
+                <Button variant="outline" className="w-full">
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Subject
+                </Button>
+              </Link>
+              <Link href="/admin/lessons/new">
+                <Button className="w-full">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Add Lesson
+                </Button>
+              </Link>
+              <Link href="/admin/books/new">
+                <Button variant="outline" className="w-full">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  New Book
+                </Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       )}
