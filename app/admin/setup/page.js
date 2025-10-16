@@ -422,66 +422,6 @@ export default function SetupWizard() {
             </div>
           )}
 
-          {/* Step 4: Lesson */}
-          {step === 4 && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <FileText className="h-6 w-6 text-primary" />
-                <h3 className="text-lg font-semibold">Step 4: Lesson</h3>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Lesson Number *</Label>
-                <Input
-                  type="number"
-                  min="1"
-                  placeholder="1"
-                  value={formData.lessonNumber}
-                  onChange={(e) => updateFormData('lessonNumber', e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Lesson Name *</Label>
-                <Input
-                  placeholder="e.g., Introduction to Numbers"
-                  value={formData.lessonName}
-                  onChange={(e) => updateFormData('lessonName', e.target.value)}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Step 5: PDF Upload */}
-          {step === 5 && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Upload className="h-6 w-6 text-primary" />
-                <h3 className="text-lg font-semibold">Step 5: Upload PDF</h3>
-              </div>
-
-              <Alert>
-                <AlertDescription>
-                  Upload the lesson PDF to start the digitization process.
-                </AlertDescription>
-              </Alert>
-
-              <div className="space-y-2">
-                <Label>PDF File *</Label>
-                <Input
-                  type="file"
-                  accept=".pdf"
-                  onChange={(e) => updateFormData('pdfFile', e.target.files?.[0] || null)}
-                />
-                {formData.pdfFile && (
-                  <p className="text-sm text-muted-foreground">
-                    Selected: {formData.pdfFile.name} ({(formData.pdfFile.size / (1024 * 1024)).toFixed(2)} MB)
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Error/Success Messages */}
           {error && (
             <Alert variant="destructive" className="mt-4">
