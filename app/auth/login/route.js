@@ -4,8 +4,12 @@ import { NextResponse } from 'next/server'
 export async function GET(request) {
   const supabase = createClient()
   const requestUrl = new URL(request.url)
-  const origin = requestUrl.origin
-  const redirectTo = `${origin}/auth/callback`
+  
+  // Get the actual base URL from environment or request
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || requestUrl.origin
+  const redirectTo = `${baseUrl}/auth/callback`
+
+  console.log('Initiating OAuth login:', { baseUrl, redirectTo })
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -20,9 +24,10 @@ export async function GET(request) {
 
   if (error) {
     console.error('OAuth error:', error)
-    return NextResponse.redirect(`${origin}/login?error=auth_failed`)
+    return NextResponse.redirect(`${baseUrl}/login?error=auth_failed`)
   }
 
+  console.log('Redirecting to OAuth provider:', data.url)
   // Redirect to Google OAuth (GET request)
   return NextResponse.redirect(data.url)
 }
