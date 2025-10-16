@@ -186,7 +186,7 @@ export default function SetupWizard() {
         setSuccess('Book selected!')
         setStep(3)
       } else if (step === 3) {
-        // Create Subject
+        // Create Subject - Final step
         if (!formData.subjectName) {
           throw new Error('Please enter subject name')
         }
@@ -206,7 +206,12 @@ export default function SetupWizard() {
         if (!res.ok) throw new Error(data.error)
         
         setCreatedIds(prev => ({ ...prev, subjectId: data.subject.id }))
-        setSuccess('Subject created!')
+        setSuccess('Setup complete! Subject created successfully.')
+        
+        // Redirect to admin dashboard after 2 seconds
+        setTimeout(() => {
+          router.push('/admin')
+        }, 2000)
         setStep(4)
       } else if (step === 4) {
         // Create Lesson
