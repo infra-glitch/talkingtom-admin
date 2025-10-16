@@ -456,7 +456,7 @@ export default function SetupWizard() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Processing...
                 </>
-              ) : step === 5 ? (
+              ) : step === 3 ? (
                 <>
                   <CheckCircle className="mr-2 h-4 w-4" />
                   Complete Setup
