@@ -212,56 +212,7 @@ export default function SetupWizard() {
         setTimeout(() => {
           router.push('/admin')
         }, 2000)
-        setStep(4)
-      } else if (step === 4) {
-        // Create Lesson
-        if (!formData.lessonName || !formData.lessonNumber) {
-          throw new Error('Please enter lesson name and number')
-        }
-
-        const res = await fetch('/api/lessons', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            book_id: parseInt(formData.bookId),
-            lesson_number: parseInt(formData.lessonNumber),
-            name: formData.lessonName
-          })
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.error)
-        
-        setCreatedIds(prev => ({ ...prev, lessonId: data.lesson.id }))
-        setSuccess('Lesson created!')
-        setStep(5)
-      } else if (step === 5) {
-        // Upload PDF
-        if (!formData.pdfFile) {
-          throw new Error('Please select a PDF file')
-        }
-
-        const uploadFormData = new FormData()
-        uploadFormData.append('pdf', formData.pdfFile)
-        uploadFormData.append('lessonId', createdIds.lessonId.toString())
-
-        const res = await fetch('/api/lessons/upload', {
-          method: 'POST',
-          body: uploadFormData
-        })
-        const data = await res.json()
-        if (!res.ok) throw new Error(data.error)
-
-        // Start processing
-        await fetch('/api/lessons/process', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ lessonId: createdIds.lessonId })
-        })
-
-        setSuccess('Setup complete! Redirecting...')
-        setTimeout(() => {
-          router.push(`/admin/lessons/${createdIds.lessonId}/status`)
-        }, 2000)
+// Setup ends at subject creation
       }
     } catch (error) {
       console.error('Error:', error)
