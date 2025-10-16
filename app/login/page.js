@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { BookOpen } from 'lucide-react'
@@ -29,9 +30,8 @@ export default async function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action="/auth/login" method="post">
+          <Link href="/auth/login">
             <Button 
-              type="submit"
               className="w-full"
               size="lg"
             >
@@ -55,7 +55,7 @@ export default async function LoginPage() {
               </svg>
               Sign in with Google
             </Button>
-          </form>
+          </Link>
           
           <div className="mt-6 text-center text-sm text-muted-foreground">
             <p>By signing in, you agree to our Terms of Service</p>
