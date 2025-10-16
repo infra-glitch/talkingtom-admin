@@ -269,40 +269,6 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Link href="/admin/setup">
-              <Button variant="outline" className="w-full">
-                <Plus className="mr-2 h-4 w-4" />
-                Setup Wizard
-              </Button>
-            </Link>
-            <Link href="/admin/lessons/new">
-              <Button variant="outline" className="w-full">
-                <FileText className="mr-2 h-4 w-4" />
-                New Lesson
-              </Button>
-            </Link>
-            <Link href="/admin/books/new">
-              <Button variant="outline" className="w-full">
-                <BookOpen className="mr-2 h-4 w-4" />
-                New Book
-              </Button>
-            </Link>
-            <Link href="/admin/subjects/new">
-              <Button variant="outline" className="w-full">
-                <Library className="mr-2 h-4 w-4" />
-                New Subject
-              </Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }
