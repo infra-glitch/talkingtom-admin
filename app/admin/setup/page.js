@@ -276,7 +276,7 @@ export default function SetupWizard() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const progress = (step / 5) * 100
+  const progress = (step / 3) * 100
 
   return (
     <div className="container mx-auto p-6 max-w-3xl">
