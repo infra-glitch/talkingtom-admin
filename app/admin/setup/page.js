@@ -293,7 +293,7 @@ export default function SetupWizard() {
         <CardHeader>
           <CardTitle className="text-2xl">Setup Wizard</CardTitle>
           <CardDescription>
-            Complete setup for lesson digitization - Step {step} of 5
+            Create Subject by linking School, Curriculum, Grade & Book - Step {step} of 3
           </CardDescription>
           <Progress value={progress} className="mt-4" />
         </CardHeader>
