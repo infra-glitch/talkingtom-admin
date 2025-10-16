@@ -1,9 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 
-export async function POST(request) {
+export async function GET(request) {
   const supabase = createClient()
-  const origin = request.headers.get('origin')
+  const requestUrl = new URL(request.url)
+  const origin = requestUrl.origin
   const redirectTo = `${origin}/auth/callback`
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -22,5 +23,6 @@ export async function POST(request) {
     return NextResponse.redirect(`${origin}/login?error=auth_failed`)
   }
 
+  // Redirect to Google OAuth (GET request)
   return NextResponse.redirect(data.url)
 }
