@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { db, storage } from '@/lib/supabase'
+import { db, storage } from '@/lib/db'
 import pdfProcessor from '@/lib/services/pdfProcessor'
 import ocrService from '@/lib/services/ocrService'
 import aiSegmentation from '@/lib/services/aiSegmentation'
