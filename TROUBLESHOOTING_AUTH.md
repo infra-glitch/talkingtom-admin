@@ -11,7 +11,7 @@ The OAuth callback is failing because the **redirect URL doesn't match** what's 
 ### What's Happening
 
 1. User clicks "Sign in with Google"
-2. App redirects to: `https://contentia-2.preview.emergentagent.com/auth/callback`
+2. App redirects to: `https://learnbook-admin.preview.emergentagent.com/auth/callback`
 3. Google authenticates user
 4. Google redirects back to: `http://localhost:3000/auth/callback` (wrong!)
 5. Callback fails because URL mismatch or code exchange fails
@@ -29,7 +29,7 @@ The OAuth callback is failing because the **redirect URL doesn't match** what's 
 In the **Redirect URLs** section, add these EXACT URLs:
 
 ```
-https://contentia-2.preview.emergentagent.com/auth/callback
+https://learnbook-admin.preview.emergentagent.com/auth/callback
 http://localhost:3000/auth/callback
 ```
 
@@ -42,7 +42,7 @@ http://localhost:3000/auth/callback
 
 Set the **Site URL** to your main domain:
 ```
-https://contentia-2.preview.emergentagent.com
+https://learnbook-admin.preview.emergentagent.com
 ```
 
 ### Step 4: Save Changes
@@ -54,7 +54,7 @@ Click **Save** - changes take effect immediately.
 Check `/app/.env` has the correct base URL:
 
 ```env
-NEXT_PUBLIC_BASE_URL=https://contentia-2.preview.emergentagent.com
+NEXT_PUBLIC_BASE_URL=https://learnbook-admin.preview.emergentagent.com
 ```
 
 If you changed this, restart the server:
@@ -120,13 +120,13 @@ Session created successfully for user: user@example.com
 
 **Step 1 - Visit login page:**
 ```
-URL: https://contentia-2.preview.emergentagent.com/login
+URL: https://learnbook-admin.preview.emergentagent.com/login
 Expected: See "Sign in with Google" button
 ```
 
 **Step 2 - Click sign in:**
 ```
-URL: https://contentia-2.preview.emergentagent.com/auth/login
+URL: https://learnbook-admin.preview.emergentagent.com/auth/login
 Expected: Redirect to Supabase OAuth
 ```
 
@@ -138,13 +138,13 @@ Expected: Google sign-in page
 
 **Step 4 - Google redirects back:**
 ```
-URL: https://contentia-2.preview.emergentagent.com/auth/callback?code=...
+URL: https://learnbook-admin.preview.emergentagent.com/auth/callback?code=...
 Expected: Server logs show "Session created successfully"
 ```
 
 **Step 5 - Final redirect:**
 ```
-URL: https://contentia-2.preview.emergentagent.com/admin
+URL: https://learnbook-admin.preview.emergentagent.com/admin
 Expected: See admin dashboard with your name/email in header
 ```
 
@@ -180,7 +180,7 @@ These should be:
 
 **Authorized JavaScript origins should include:**
 ```
-https://contentia-2.preview.emergentagent.com
+https://learnbook-admin.preview.emergentagent.com
 https://tjuiyhzhmubkybhsogqe.supabase.co
 ```
 

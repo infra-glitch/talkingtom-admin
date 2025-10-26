@@ -52,10 +52,10 @@ This application uses **server-side authentication** with Supabase Auth and Goog
 #### Configure URLs
 
 1. Go to **Authentication → URL Configuration**
-2. Set **Site URL**: `https://contentia-2.preview.emergentagent.com`
+2. Set **Site URL**: `https://learnbook-admin.preview.emergentagent.com`
 3. Add **Redirect URLs**:
    ```
-   https://contentia-2.preview.emergentagent.com/auth/callback
+   https://learnbook-admin.preview.emergentagent.com/auth/callback
    http://localhost:3000/auth/callback
    ```
 
@@ -66,7 +66,7 @@ This application uses **server-side authentication** with Supabase Auth and Goog
 3. Create or select OAuth 2.0 Client ID
 4. Add **Authorized JavaScript origins**:
    ```
-   https://contentia-2.preview.emergentagent.com
+   https://learnbook-admin.preview.emergentagent.com
    https://tjuiyhzhmubkybhsogqe.supabase.co
    ```
 5. Add **Authorized redirect URIs**:

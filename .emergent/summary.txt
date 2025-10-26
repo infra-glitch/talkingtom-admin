@@ -1,0 +1,94 @@
+<analysis>
+The AI engineer successfully initiated development of a lesson digitization admin portal. The project began with clarifying conflicting framework/database requirements, settling on Next.js with Supabase. Integrations for OCR (Google Cloud Vision), TTS (ElevenLabs), and AI (OpenAI/Emergent LLM Key) were planned. Initial development focused on creating the core application structure, including a PDF upload API, an admin dashboard, and a multi-step setup wizard for creating schools, curriculums, grades, subjects, and books. A significant portion of work involved implementing and refining server-side Supabase authentication with PKCE flow and ensuring RLS compatibility for database calls. The setup wizard was later split into two parts for better usability: initial setup and repeatable lesson creation. Currently, the previous engineer presented a detailed plan for implementing comprehensive CRUD pages for all master entities (School, Grade, Curriculum, Subject, Book) and a Book Lessons List page, which the user approved.
+</analysis>
+
+<product_requirements>
+The user requires an admin portal for digitizing lesson PDFs. This involves:
+1.  **PDF Processing**: Uploading PDFs containing images of lesson pages, performing OCR to extract text and images.
+2.  **Content Structuring**: Dividing extracted content into  (topics/subtopics) and  as per the provided schema. Automatic topic/subtopic detection using AI (OpenAI) is required.
+3.  **Multimedia Generation**: Converting  text to audio ( using ElevenLabs) and storing relevant images ().
+4.  **Database**: Supabase (explicitly requested over MongoDB).
+5.  **Framework**: Next.js (chosen for faster development over React Router 7).
+6.  **Admin Workflow**:
+    *   Split into two parts:
+        *   **Setup Wizard**: Create School, Curriculum, Grade, Subject, and Book (this sequence ensures foundational data exists). A book can be mapped to multiple subjects.
+        *   **Add Lessons**: Repeatedly create lessons for an existing book.
+    *   **Lesson Detail Page**: Display all topics, subtopics, and quiz questions (with answers, parsed from  JSON structure) for a given lesson.
+    *   **CRUD Pages for Masters**: Create, Read, Update, Delete (CRUD) functionality for School, Grade, Curriculum, Subject, and Book entities.
+    *   **Subject List Page**: Filterable by School, Grade, Curriculum. Each subject card shows the mapped book (clickable) or a CTA to create a book.
+    *   **Book Lessons List Page**: Accessed by clicking a book, lists all lessons associated with that book.
+7.  **Authentication**: Server-side Supabase authentication with Google provider using PKCE flow and HTTP-only cookies.
+8.  **Data Security**: Implement Row Level Security (RLS) for Supabase database calls.
+9.  **External Integrations**: Google Cloud Vision API (OCR), ElevenLabs (Text-to-Speech), OpenAI (AI for content segmentation/auto-detection) using Emergent LLM key.
+</product_requirements>
+
+<key_technical_concepts>
+- Next.js: Full-stack React framework for application development.
+- Supabase: Backend-as-a-service for database (PostgreSQL), authentication (PKCE flow, Google OAuth), and storage.
+- Shadcn UI/Tailwind CSS: Frontend component library and styling framework.
+- OCR (Google Cloud Vision API): Extracting text and images from PDF pages.
+- Text-to-Speech (ElevenLabs): Converting text content into audio.
+- AI (OpenAI): Automatic detection and segmentation of topics/subtopics.
+- Server-Side Authentication: Secure user authentication using HTTP-only cookies and PKCE.
+- Row Level Security (RLS): Database access control based on user roles.
+</key_technical_concepts>
+
+<code_architecture>
+
+
+
+**Key Files and Their Importance:**
+
+-   : Stores environment variables including Supabase credentials and base URL. Crucial for secure configuration.
+-   : Initializes the Supabase client for database interactions. Initially handled client-side auth, now configured for server-side RLS with authenticated client.
+-   : Contains server-side Supabase client initialization for PKCE authentication and database operations, ensuring secure access.
+-   : A new helper that uses the authenticated server client for all Supabase database calls, enforcing Row Level Security.
+-   : Handles server-side authentication logic, including sign-in with Google, sign-out, and session management.
+-   : (Previously used, now largely replaced by server-side logic). Managed client-side auth state.
+-   : Main application layout, now wraps content with  and redirects unauthenticated users from  routes.
+-   : Admin-specific layout, includes  and  for displaying user info, protecting admin routes.
+-   : The root page, now redirects based on authentication status (to  or ).
+-   : Dedicated login page, provides Sign in with Google option.
+-   : API route for initiating Google OAuth sign-in.
+-   : API route that Supabase redirects to after authentication, handles session creation and token exchange.
+-   : The main admin dashboard, displays quick actions, recent books, and now includes links for New Setup and Add New Lesson. Modified to show options for creating new setup vs adding lessons.
+-   : The multi-step wizard for creating Schools, Curriculums, Grades, Subjects, and Books. It was refactored to end at Subject/Book creation.
+-   : Page for adding a new lesson to an existing book (separated from setup wizard).
+-   : Displays detailed information for a specific lesson, including its topics, subtopics, and quiz questions based on their JSON structure.
+-   : Handles PDF file uploads for lessons, uses authenticated storage.
+-   : API routes for fetching existing master data and handling POST requests (creation).
+
+**Future Planned Files (as per plan):**
+-   : CRUD UI for each master entity.
+-   : Page to list all lessons for a specific book.
+-   : API routes for PUT (update) and DELETE operations for master entities.
+-   : Reusable UI components.
+</code_architecture>
+
+<pending_tasks>
+-   Implement the detailed CRUD pages for School, Grade, Curriculum, Subject, and Book (list, new, view, edit).
+-   Implement the Book Lessons List page.
+-   Create corresponding API routes for UPDATE and DELETE operations for all master entities.
+-   Develop shared UI components: DataTable, DeleteConfirmDialog, FilterBar, EmptyState.
+-   Address open design questions regarding delete behavior (soft/hard), validation for subjects without books, user permissions, and top navigation.
+</pending_tasks>
+
+<current_work>
+The previous AI engineer has completed the foundational setup of the Lesson Digitization Admin Portal. This includes:
+1.  **Core Application Setup**: A Next.js application with Tailwind CSS and Shadcn UI components.
+2.  **Supabase Integration**: Configured for database operations, and server-side authentication with Google provider using PKCE flow, including HTTP-only cookies and proper redirect handling. The system is RLS-compatible, using an authenticated server client for all database calls.
+3.  **Admin Dashboard**: A main  page that serves as a hub, redirecting to the setup wizard or lesson creation.
+4.  **Setup Wizard**: A multi-step wizard () for creating core entities: School, Curriculum, Grade, Subject, and Book. This wizard is now split, concluding after Subject/Book creation.
+5.  **Lesson Creation**: A dedicated page () for adding new lessons to an existing book.
+6.  **PDF Upload**: An API endpoint () capable of handling PDF file uploads.
+7.  **Lesson Detail Page**: A page () that displays comprehensive lesson information, including topics, subtopics, and dynamically rendered quiz questions based on their schema.
+8.  **API Routes**: Basic API routes for fetching and creating Schools, Curriculums, Grades, Subjects, Books, and Lessons.
+9.  **Documentation**: Several markdown files (, , , , , ) providing setup instructions and technical details.
+
+The immediate next step, as confirmed by the user, is to implement the comprehensive CRUD pages and list views for all master entities (School, Grade, Curriculum, Subject, Book) and the Book Lessons List page, following a detailed plan presented by the AI engineer.
+</current_work>
+
+<optional_next_step>
+Implement the CRUD API routes and shared components, then proceed with creating the detailed CRUD pages and list views for School, Grade, Curriculum, Subject, and Book as per the approved plan.
+</optional_next_step>
+
