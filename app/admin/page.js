@@ -220,13 +220,18 @@ export default function AdminDashboard() {
                         Lesson {lesson.lesson_number}
                       </div>
                     </div>
-                    {lesson.thumbnail ? (
-                      <Badge variant="default" className="text-xs">PDF Ready</Badge>
-                    ) : (
-                      <Link href={`/admin/lessons/${lesson.id}/upload`}>
-                        <Button variant="outline" size="sm">Upload PDF</Button>
+                    <div className="flex items-center gap-2">
+                      {lesson.thumbnail ? (
+                        <Badge variant="default" className="text-xs">PDF Ready</Badge>
+                      ) : (
+                        <Link href={`/admin/lessons/${lesson.id}/upload`}>
+                          <Button variant="outline" size="sm">Upload PDF</Button>
+                        </Link>
+                      )}
+                      <Link href={`/admin/lessons/${lesson.id}`}>
+                        <Button variant="ghost" size="sm">View</Button>
                       </Link>
-                    )}
+                    </div>
                   </div>
                 ))}
               </div>
