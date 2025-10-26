@@ -4,19 +4,11 @@ import { db } from '@/lib/db'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+// GET single grade
 export async function GET(request, { params }) {
   try {
-    const id = parseInt(params.id)
-    const grades = await db.getGrades()
-    const grade = grades.find(g => g.id === id)
-    
-    if (!grade) {
-      return NextResponse.json(
-        { error: 'Grade not found' },
-        { status: 404 }
-      )
-    }
-    
+    const { id } = params
+    const grade = await db.getGradeById(id)
     return NextResponse.json({ success: true, grade })
   } catch (error) {
     console.error('Get grade error:', error)
@@ -27,9 +19,10 @@ export async function GET(request, { params }) {
   }
 }
 
+// PUT update grade
 export async function PUT(request, { params }) {
   try {
-    const id = parseInt(params.id)
+    const { id } = params
     const body = await request.json()
     const { grade } = body
 
@@ -40,19 +33,12 @@ export async function PUT(request, { params }) {
       )
     }
 
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
+    const updatedGrade = await db.updateGrade(id, {
+      grade,
+      updated_at: new Date().toISOString()
+    })
     
-    const { data, error } = await supabase
-      .from('grade')
-      .update({ grade })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, grade: data })
+    return NextResponse.json({ success: true, grade: updatedGrade })
   } catch (error) {
     console.error('Update grade error:', error)
     return NextResponse.json(
@@ -62,23 +48,12 @@ export async function PUT(request, { params }) {
   }
 }
 
+// DELETE (soft delete) grade
 export async function DELETE(request, { params }) {
   try {
-    const id = parseInt(params.id)
-
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
-    
-    const { data, error } = await supabase
-      .from('grade')
-      .update({ active: false })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, message: 'Grade deleted' })
+    const { id } = params
+    const grade = await db.deleteGrade(id)
+    return NextResponse.json({ success: true, grade })
   } catch (error) {
     console.error('Delete grade error:', error)
     return NextResponse.json(

@@ -4,19 +4,11 @@ import { db } from '@/lib/db'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+// GET single subject
 export async function GET(request, { params }) {
   try {
-    const id = parseInt(params.id)
-    const subjects = await db.getSubjects()
-    const subject = subjects.find(s => s.id === id)
-    
-    if (!subject) {
-      return NextResponse.json(
-        { error: 'Subject not found' },
-        { status: 404 }
-      )
-    }
-    
+    const { id } = params
+    const subject = await db.getSubjectById(id)
     return NextResponse.json({ success: true, subject })
   } catch (error) {
     console.error('Get subject error:', error)
@@ -27,38 +19,38 @@ export async function GET(request, { params }) {
   }
 }
 
+// PUT update subject
 export async function PUT(request, { params }) {
   try {
-    const id = parseInt(params.id)
+    const { id } = params
     const body = await request.json()
     const { name, school_id, curriculum_id, grade_id, book_id } = body
 
-    if (!name) {
+    if (!name || !school_id || !curriculum_id || !grade_id) {
       return NextResponse.json(
-        { error: 'Name is required' },
+        { error: 'Name, school_id, curriculum_id, and grade_id are required' },
         { status: 400 }
       )
     }
 
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
+    // Validate that book_id is provided (subjects must have book mapping)
+    if (!book_id) {
+      return NextResponse.json(
+        { error: 'Book mapping is required for subjects' },
+        { status: 400 }
+      )
+    }
+
+    const subject = await db.updateSubject(id, {
+      name,
+      school_id,
+      curriculum_id,
+      grade_id,
+      book_id,
+      updated_at: new Date().toISOString()
+    })
     
-    const updateData = { name }
-    if (school_id) updateData.school_id = parseInt(school_id)
-    if (curriculum_id) updateData.curriculum_id = parseInt(curriculum_id)
-    if (grade_id) updateData.grade_id = parseInt(grade_id)
-    if (book_id) updateData.book_id = parseInt(book_id)
-    
-    const { data, error } = await supabase
-      .from('subject')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, subject: data })
+    return NextResponse.json({ success: true, subject })
   } catch (error) {
     console.error('Update subject error:', error)
     return NextResponse.json(
@@ -68,23 +60,12 @@ export async function PUT(request, { params }) {
   }
 }
 
+// DELETE (soft delete) subject
 export async function DELETE(request, { params }) {
   try {
-    const id = parseInt(params.id)
-
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
-    
-    const { data, error } = await supabase
-      .from('subject')
-      .update({ active: false })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, message: 'Subject deleted' })
+    const { id } = params
+    const subject = await db.deleteSubject(id)
+    return NextResponse.json({ success: true, subject })
   } catch (error) {
     console.error('Delete subject error:', error)
     return NextResponse.json(

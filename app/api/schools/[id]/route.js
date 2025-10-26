@@ -4,20 +4,11 @@ import { db } from '@/lib/db'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-// Get single school
+// GET single school
 export async function GET(request, { params }) {
   try {
-    const id = parseInt(params.id)
-    const schools = await db.getSchools()
-    const school = schools.find(s => s.id === id)
-    
-    if (!school) {
-      return NextResponse.json(
-        { error: 'School not found' },
-        { status: 404 }
-      )
-    }
-    
+    const { id } = params
+    const school = await db.getSchoolById(id)
     return NextResponse.json({ success: true, school })
   } catch (error) {
     console.error('Get school error:', error)
@@ -28,10 +19,10 @@ export async function GET(request, { params }) {
   }
 }
 
-// Update school
+// PUT update school
 export async function PUT(request, { params }) {
   try {
-    const id = parseInt(params.id)
+    const { id } = params
     const body = await request.json()
     const { name, address, state, country } = body
 
@@ -42,19 +33,15 @@ export async function PUT(request, { params }) {
       )
     }
 
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
+    const school = await db.updateSchool(id, {
+      name,
+      address: address || null,
+      state,
+      country: country || 'India',
+      updated_at: new Date().toISOString()
+    })
     
-    const { data, error } = await supabase
-      .from('school')
-      .update({ name, address, state, country })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, school: data })
+    return NextResponse.json({ success: true, school })
   } catch (error) {
     console.error('Update school error:', error)
     return NextResponse.json(
@@ -64,24 +51,12 @@ export async function PUT(request, { params }) {
   }
 }
 
-// Delete school (soft delete)
+// DELETE (soft delete) school
 export async function DELETE(request, { params }) {
   try {
-    const id = parseInt(params.id)
-
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
-    
-    const { data, error } = await supabase
-      .from('school')
-      .update({ active: false })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, message: 'School deleted' })
+    const { id } = params
+    const school = await db.deleteSchool(id)
+    return NextResponse.json({ success: true, school })
   } catch (error) {
     console.error('Delete school error:', error)
     return NextResponse.json(

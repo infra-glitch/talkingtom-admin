@@ -4,19 +4,11 @@ import { db } from '@/lib/db'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+// GET single book
 export async function GET(request, { params }) {
   try {
-    const id = parseInt(params.id)
-    const books = await db.getBooks()
-    const book = books.find(b => b.id === id)
-    
-    if (!book) {
-      return NextResponse.json(
-        { error: 'Book not found' },
-        { status: 404 }
-      )
-    }
-    
+    const { id } = params
+    const book = await db.getBookById(id)
     return NextResponse.json({ success: true, book })
   } catch (error) {
     console.error('Get book error:', error)
@@ -27,9 +19,10 @@ export async function GET(request, { params }) {
   }
 }
 
+// PUT update book
 export async function PUT(request, { params }) {
   try {
-    const id = parseInt(params.id)
+    const { id } = params
     const body = await request.json()
     const { title, author, slug } = body
 
@@ -40,15 +33,14 @@ export async function PUT(request, { params }) {
       )
     }
 
-    const updateData = {
+    const book = await db.updateBook(id, {
       title,
       author: author || null,
-      slug: slug || title.toLowerCase().replace(/\s+/g, '-')
-    }
-
-    const updatedBook = await db.updateBook(id, updateData)
+      slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
+      updated_at: new Date().toISOString()
+    })
     
-    return NextResponse.json({ success: true, book: updatedBook })
+    return NextResponse.json({ success: true, book })
   } catch (error) {
     console.error('Update book error:', error)
     return NextResponse.json(
@@ -58,23 +50,12 @@ export async function PUT(request, { params }) {
   }
 }
 
+// DELETE (soft delete) book
 export async function DELETE(request, { params }) {
   try {
-    const id = parseInt(params.id)
-
-    const { createClient } = await import('@/lib/supabase/server')
-    const supabase = createClient()
-    
-    const { data, error } = await supabase
-      .from('book')
-      .update({ active: false })
-      .eq('id', id)
-      .select()
-      .single()
-    
-    if (error) throw error
-    
-    return NextResponse.json({ success: true, message: 'Book deleted' })
+    const { id } = params
+    const book = await db.deleteBook(id)
+    return NextResponse.json({ success: true, book })
   } catch (error) {
     console.error('Delete book error:', error)
     return NextResponse.json(
