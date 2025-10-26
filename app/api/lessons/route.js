@@ -7,9 +7,9 @@ export const dynamic = 'force-dynamic'
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url)
-    const bookId = searchParams.get('bookId')
+    const bookId = searchParams.get('book_id') || searchParams.get('bookId')
 
-    const lessons = await db.getLessons(bookId ? parseInt(bookId) : null)
+    const lessons = await db.getLessons(bookId || null)
     
     return NextResponse.json({ success: true, lessons })
   } catch (error) {
