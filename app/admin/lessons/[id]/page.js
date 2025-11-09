@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ArrowLeft, BookOpen, FileText, Volume2, HelpCircle, CheckCircle } from 'lucide-react'
 import TopicCard from '@/components/TopicCard'
 import QuestionCard from '@/components/QuestionCard'
+import QuestionManagement from '@/components/QuestionManagement'
 
 export default async function LessonDetailPage({ params }) {
   const supabase = createClient()
