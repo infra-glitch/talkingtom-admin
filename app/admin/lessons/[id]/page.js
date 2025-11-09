@@ -155,50 +155,7 @@ export default async function LessonDetailPage({ params }) {
 
         {/* Questions Tab */}
         <TabsContent value="questions" className="space-y-6">
-          {allQuizSections.length === 0 || totalQuestions === 0 ? (
-            <Card>
-              <CardContent className="text-center py-12">
-                <HelpCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <p className="text-muted-foreground mb-4">No questions yet</p>
-                <p className="text-sm text-muted-foreground">
-                  Questions will be generated after processing the lesson
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            allQuizSections.map((section) => {
-              const activeQuestions = section.questions?.filter(q => q.active) || []
-              if (activeQuestions.length === 0) return null
-
-              return (
-                <div key={section.id}>
-                  <Card className="mb-4">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle>{section.name}</CardTitle>
-                          <CardDescription>
-                            {activeQuestions.length} question{activeQuestions.length !== 1 ? 's' : ''}
-                          </CardDescription>
-                        </div>
-                        <Badge>{section.order}</Badge>
-                      </div>
-                    </CardHeader>
-                  </Card>
-
-                  <div className="space-y-4">
-                    {activeQuestions.map((question, qIndex) => (
-                      <QuestionCard
-                        key={question.id}
-                        question={question}
-                        questionNumber={qIndex + 1}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )
-            })
-          )}
+          <QuestionManagement lessonId={lessonId} initialSections={allQuizSections} />
         </TabsContent>
       </Tabs>
     </div>
