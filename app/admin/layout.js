@@ -1,9 +1,7 @@
-'use client'
-
 import UserNav from '@/components/UserNav'
 import Link from 'next/link'
 import { BookOpen, ChevronDown } from 'lucide-react'
-import { usePathname } from 'next/navigation'
+// import { usePathname } from 'next/navigation'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +11,13 @@ import {
 import { Button } from '@/components/ui/button'
 
 export default function AdminLayout({ children }) {
-  const pathname = usePathname()
+  // const pathname = usePathname()
 
+  // Fix this later
+  // Cant use usePathName in a server component issue
+  const pathname = ""
   const isActive = (path) => {
-    return pathname.startsWith(path)
+    return false;
   }
 
   return (

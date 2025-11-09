@@ -43,7 +43,7 @@ export async function POST(request) {
       // Update lesson with PDF URL
       const pdfUrl = storage.getPublicUrl('lesson-pdfs', `lessons/${lessonId}/original.pdf`)
       await db.updateLesson(parseInt(lessonId), {
-        thumbnail: pdfUrl // Store PDF URL in thumbnail for now
+        uploaded_pdf: pdfUrl // Store PDF URL in thumbnail for now
       })
     } catch (storageError) {
       console.error('Storage error:', storageError)

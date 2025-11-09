@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase/client'
 import { LogOut, User } from 'lucide-react'
 
 export default async function UserNav() {
