@@ -39,10 +39,21 @@ export async function POST(request) {
       )
     }
 
+    // Fetch lesson to get book_id
+    const lesson = await db.getLessonById(lesson_id)
+    if (!lesson || !lesson.book_id) {
+      return NextResponse.json(
+        { error: 'Invalid lesson_id or lesson has no book_id' },
+        { status: 400 }
+      )
+    }
+
     const section = await db.createQuizSection({
       lesson_id,
+      book_id: lesson.book_id,
       name,
       order,
+      num_questions: 0,
       active: true
     })
     
