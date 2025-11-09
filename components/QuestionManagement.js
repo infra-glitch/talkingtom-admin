@@ -38,13 +38,26 @@ export default function QuestionManagement({ lessonId, initialSections = [] }) {
 
   const refreshSections = async () => {
     try {
-      const res = await fetch(`/api/quiz-sections?lesson_id=${lessonId}`)
+      // Add a small delay to ensure database transaction completes
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      const res = await fetch(`/api/quiz-sections?lesson_id=${lessonId}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      })
       const data = await res.json()
       if (data.success) {
         // Fetch questions for each section
         const sectionsWithQuestions = await Promise.all(
           data.sections.map(async (section) => {
-            const qRes = await fetch(`/api/quiz-questions?section_id=${section.id}`)
+            const qRes = await fetch(`/api/quiz-questions?section_id=${section.id}`, {
+              cache: 'no-store',
+              headers: {
+                'Cache-Control': 'no-cache',
+              }
+            })
             const qData = await qRes.json()
             return {
               ...section,
