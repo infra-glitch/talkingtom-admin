@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -19,6 +20,7 @@ import QuestionForm from '@/components/QuestionForm'
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog'
 
 export default function QuestionManagement({ lessonId, initialSections = [] }) {
+  const router = useRouter()
   const [sections, setSections] = useState(initialSections)
   const [showSectionDialog, setShowSectionDialog] = useState(false)
   const [sectionName, setSectionName] = useState('')
@@ -52,6 +54,8 @@ export default function QuestionManagement({ lessonId, initialSections = [] }) {
         )
         setSections(sectionsWithQuestions)
       }
+      // Refresh the server component to update counts in header
+      router.refresh()
     } catch (error) {
       console.error('Error refreshing sections:', error)
     }
