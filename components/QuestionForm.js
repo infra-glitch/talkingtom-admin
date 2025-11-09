@@ -196,8 +196,8 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
       const method = editQuestion ? 'PUT' : 'POST'
       
       const payload = editQuestion
-        ? { question_type: questionType, question: questionData.question, answer: questionData.answer }
-        : { section_id: sectionId, question_type: questionType, question: questionData.question, answer: questionData.answer }
+        ? { question_type: questionType, question: questionData }
+        : { section_id: sectionId, question_type: questionType, question: questionData }
 
       const res = await fetch(url, {
         method,
