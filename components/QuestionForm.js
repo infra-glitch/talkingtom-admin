@@ -116,7 +116,7 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
           question: {
             text: mcqText,
             options: mcqOptions.filter(opt => opt.value.trim()),
-            topicReferences: mcqTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
+            topic_references: mcqTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
           },
           answer: mcqAnswer
         }
@@ -127,12 +127,14 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
           alert('Please fill all required fields for Fill in the Blanks')
           return
         }
+        const filteredAnswers = blanksAnswers.filter(a => a.trim())
         questionData = {
           question: {
             text: blanksText,
-            topicReferences: blanksTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
+            blanks: filteredAnswers.length
           },
-          answer: blanksAnswers.filter(a => a.trim())
+          answer: filteredAnswers,
+          topicReferences: blanksTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
         }
         break
 
@@ -147,7 +149,7 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
             text: textQuestionText
           },
           answer: textAnswer,
-          topicReferences: textTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
+          topic_references: textTopicRefs.split(',').map(t => t.trim()).filter(Boolean)
         }
         break
 
