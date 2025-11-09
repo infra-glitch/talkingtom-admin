@@ -161,10 +161,12 @@ export default function QuestionManagement({ lessonId, initialSections = [] }) {
   }
 
   const handleQuestionSuccess = async () => {
+    console.log('handleQuestionSuccess called, refreshing sections...')
     await refreshSections()
     setShowQuestionForm(false)
     setEditingQuestion(null)
     setSelectedSection(null)
+    console.log('Question form closed, sections refreshed')
   }
 
   const totalQuestions = sections.reduce((sum, section) => 
