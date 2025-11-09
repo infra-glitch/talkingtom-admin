@@ -73,18 +73,18 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
         setMcqText(data.question?.text || '')
         setMcqOptions(data.question?.options || [])
         setMcqAnswer(data.answer || '')
-        setMcqTopicRefs(data.question?.topicReferences?.join(', ') || '')
+        setMcqTopicRefs(data.question?.topic_references?.join(', ') || '')
         break
       case 'BLANKS':
         setBlanksText(data.question?.text || '')
         setBlanksAnswers(data.answer || [''])
-        setBlanksTopicRefs(data.question?.topicReferences?.join(', ') || '')
+        setBlanksTopicRefs(data.topicReferences?.join(', ') || '')
         break
       case 'SHORT':
       case 'LONG':
         setTextQuestionText(data.question?.text || '')
         setTextAnswer(data.answer || '')
-        setTextTopicRefs(data.topicReferences?.join(', ') || '')
+        setTextTopicRefs(data.topic_references?.join(', ') || '')
         break
       case 'MATCHING':
         setMatchingText(data.question?.text || '')
