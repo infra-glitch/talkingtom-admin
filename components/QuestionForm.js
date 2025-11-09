@@ -208,6 +208,7 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
       const data = await res.json()
 
       if (data.success) {
+        console.log('Question saved successfully, calling onSuccess()')
         onSuccess()
       } else {
         alert('Failed to save question: ' + (data.error || 'Unknown error'))
