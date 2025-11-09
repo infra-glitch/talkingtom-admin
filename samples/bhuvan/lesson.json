@@ -1,0 +1,180 @@
+[
+  {
+    "topicId": "overview",
+    "topic": "Overview",
+    "subtopic": null,
+    "order": 1,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "This poem is about a tiny kite who is scared to fly high at first.",
+        "originalText": "A small kite is nervous to fly into the sky.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "With encouragement, the little kite learns to be brave.",
+        "originalText": "It becomes confident with the help of a bigger kite.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 3,
+        "text": "The poem teaches us that we can reach great heights if we try.",
+        "originalText": "The message is to believe in yourself and aim high.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "poem-stanza-1",
+    "topic": "Poem",
+    "subtopic": "Stanza 1",
+    "order": 2,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The little kite says it is scared to fly and thinks it will fall.",
+        "originalText": "The small kite fears it cannot fly without falling.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "The big kite encourages it to try and not give up.",
+        "originalText": "A larger kite motivates it to be brave and attempt flying.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "poem-stanza-2",
+    "topic": "Poem",
+    "subtopic": "Stanza 2",
+    "order": 3,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The little kite finally gathers courage to try a small flight.",
+        "originalText": "The tiny kite slowly begins to move upward, feeling brave.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "It wobbles at first but keeps going.",
+        "originalText": "Though unsteady, it continues to rise.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "poem-stanza-3",
+    "topic": "Poem",
+    "subtopic": "Stanza 3",
+    "order": 4,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The little kite climbs higher and feels excited.",
+        "originalText": "As it rises more, joy replaces fear.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "It sees the rooftops and trees below getting smaller.",
+        "originalText": "The ground appears far away, which thrills the kite.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "poem-stanza-4",
+    "topic": "Poem",
+    "subtopic": "Stanza 4",
+    "order": 5,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The little kite flies higher and higher into the sky.",
+        "originalText": "The kite continues climbing confidently above everything.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "It starts enjoying the adventure.",
+        "originalText": "It feels the excitement of flying freely.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "poem-stanza-5",
+    "topic": "Poem",
+    "subtopic": "Stanza 5",
+    "order": 6,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The little kite is now proud and happy.",
+        "originalText": "The kite feels proud of its bravery and success.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "It shines brightly in the sky like a star.",
+        "originalText": "It glitters in the sunlight high above.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "summary",
+    "topic": "Summary",
+    "subtopic": null,
+    "order": 7,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "The poem tells us to be brave and try new things even if they seem scary.",
+        "originalText": "It encourages stepping past fear to achieve big dreams.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "Just like the little kite, we can succeed if we believe in ourselves.",
+        "originalText": "Self-confidence helps reach great heights.",
+        "audioSrcUrl": ""
+      }
+    ]
+  },
+  {
+    "topicId": "new-words",
+    "topic": "New Words & Meanings",
+    "subtopic": null,
+    "order": 8,
+    "simplified_explanation": [
+      {
+        "id": 1,
+        "text": "Proud: Feeling happy about something you did well.",
+        "originalText": "Proud means joy in your achievements.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 2,
+        "text": "Wobble: To shake or move unsteadily.",
+        "originalText": "To not stay steady while moving.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 3,
+        "text": "Courage: Being brave even when something feels scary.",
+        "originalText": "Courage means facing fear with strength.",
+        "audioSrcUrl": ""
+      },
+      {
+        "id": 4,
+        "text": "Adventure: An exciting journey or experience.",
+        "originalText": "A fun and thrilling experience.",
+        "audioSrcUrl": ""
+      }
+    ]
+  }
+]

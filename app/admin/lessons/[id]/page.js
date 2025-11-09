@@ -71,7 +71,7 @@ export default async function LessonDetailPage({ params }) {
 
   const allTopics = topics || []
   const allQuizSections = quizSections || []
-  const totalQuestions = allQuizSections.reduce((sum, section) => 
+  const totalQuestions = allQuizSections.reduce((sum, section) =>
     sum + (section.questions?.filter(q => q.active).length || 0), 0
   )
 
@@ -93,7 +93,6 @@ export default async function LessonDetailPage({ params }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <Badge>Lesson {lesson.lesson_number}</Badge>
-              {lesson.thumbnail && <Badge variant="secondary">PDF Uploaded</Badge>}
             </div>
             <h1 className="text-3xl font-bold mb-2">{lesson.name}</h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -108,6 +107,11 @@ export default async function LessonDetailPage({ params }) {
               <div className="flex items-center gap-1">
                 <HelpCircle className="h-4 w-4" />
                 <span>{totalQuestions} Questions</span>
+              </div>
+              <div className="flex items-center gap-1">
+                
+                {!lesson.published && <Badge variant="destructive">Not published</Badge>}
+                {lesson.published && <Badge variant="default">Published</Badge>}
               </div>
             </div>
           </div>

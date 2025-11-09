@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge'
 import { Volume2, Image as ImageIcon } from 'lucide-react'
 
 export default function TopicCard({ topic, index }) {
+  console.log(topic);
   const segments = topic.simplified_explanation || []
 
   return (
@@ -14,7 +15,7 @@ export default function TopicCard({ topic, index }) {
               <Badge variant="outline">Topic {index + 1}</Badge>
               {topic.subtopic && <Badge variant="secondary">Subtopic</Badge>}
             </div>
-            <CardTitle className="text-xl">{topic.topic}</CardTitle>
+            <CardTitle className="text-xl">{topic.topic} | {topic.topic_id}</CardTitle>
             {topic.subtopic && (
               <p className="text-sm text-muted-foreground mt-1">{topic.subtopic}</p>
             )}
