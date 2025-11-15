@@ -73,6 +73,7 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
     const type = question.question_type
 
     setQuestionType(type)
+    setOrder(question.order || 1)
 
     // Load hints if present (common for all question types)
     if (data.hints) {
