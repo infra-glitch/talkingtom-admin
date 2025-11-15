@@ -28,6 +28,7 @@ const QUESTION_TYPES = [
 export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuestion = null }) {
   const [questionType, setQuestionType] = useState(editQuestion?.question_type || '')
   const [saving, setSaving] = useState(false)
+  const [order, setOrder] = useState(1)
 
   // MCQ State
   const [mcqText, setMcqText] = useState('')
