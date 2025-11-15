@@ -173,16 +173,18 @@ function BlanksQuestion({ data }) {
         </div>
       </div>
 
-      {data.question.topicReferences && data.question.topicReferences.length > 0 && (
+      {data.topicReferences && data.topicReferences.length > 0 && (
         <div className="mt-4 pt-4 border-t">
           <p className="text-xs text-muted-foreground mb-2">Topic References:</p>
           <div className="flex flex-wrap gap-1">
-            {data.question.topicReferences.map((ref, idx) => (
+            {data.topicReferences.map((ref, idx) => (
               <Badge key={idx} variant="outline" className="text-xs">{ref}</Badge>
             ))}
           </div>
         </div>
       )}
+
+      <HintsSection hints={data.hints} />
     </div>
   )
 }
