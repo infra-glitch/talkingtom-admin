@@ -85,6 +85,11 @@ export default function QuestionCard({ question, questionNumber }) {
           <div className="flex items-center gap-2">
             <Badge variant="outline">Q{questionNumber}</Badge>
             <Badge>{questionType}</Badge>
+            {question.order && (
+              <Badge variant="secondary" className="text-xs">
+                Order: {question.order}
+              </Badge>
+            )}
           </div>
         </div>
       </CardHeader>
