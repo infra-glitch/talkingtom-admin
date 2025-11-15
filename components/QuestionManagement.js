@@ -204,7 +204,8 @@ export default function QuestionManagement({ lessonId, initialSections = [] }) {
         </Card>
       ) : (
         sections.map((section) => {
-          const activeQuestions = section.questions?.filter(q => q.active) || []
+          const activeQuestions = (section.questions?.filter(q => q.active) || [])
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
           
           return (
             <div key={section.id}>
