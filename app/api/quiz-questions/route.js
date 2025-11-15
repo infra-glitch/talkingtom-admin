@@ -30,7 +30,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json()
-    const { section_id, question_type, question } = body
+    const { section_id, question_type, question, answer, order } = body
 
     if (!section_id || !question_type || !question) {
       return NextResponse.json(
@@ -40,9 +40,11 @@ export async function POST(request) {
     }
 
     const questionData = await db.createQuizQuestion({
-      question_type: question_type,
       quiz_section_id: section_id,
-      question: question,
+      question_type,
+      question,
+      answer,
+      order: order || 1,
       active: true
     })
     
