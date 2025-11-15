@@ -3,7 +3,57 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { CheckCircle, Circle } from 'lucide-react'
+import { CheckCircle, Circle, Lightbulb } from 'lucide-react'
+
+// Hints Section Component (reusable for all question types)
+function HintsSection({ hints }) {
+  if (!hints) return null
+
+  const hasContent = hints.hint_text || hints.topic_pills?.length > 0 || hints.keyword_pills?.length > 0
+
+  if (!hasContent) return null
+
+  return (
+    <div className="mt-4 pt-4 border-t">
+      <div className="flex items-center gap-2 mb-3">
+        <Lightbulb className="h-4 w-4 text-blue-600" />
+        <p className="text-sm font-semibold text-blue-900">Hints</p>
+      </div>
+
+      {hints.hint_text && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+          <p className="text-sm text-blue-900">{hints.hint_text}</p>
+        </div>
+      )}
+
+      {hints.topic_pills && hints.topic_pills.length > 0 && (
+        <div className="mb-2">
+          <p className="text-xs text-muted-foreground mb-1">Topic Pills:</p>
+          <div className="flex flex-wrap gap-1">
+            {hints.topic_pills.map((pill, idx) => (
+              <Badge key={idx} variant="secondary" className="text-xs">
+                {pill}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hints.keyword_pills && hints.keyword_pills.length > 0 && (
+        <div>
+          <p className="text-xs text-muted-foreground mb-1">Keyword Pills:</p>
+          <div className="flex flex-wrap gap-1">
+            {hints.keyword_pills.map((pill, idx) => (
+              <Badge key={idx} variant="outline" className="text-xs">
+                {pill}
+              </Badge>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function QuestionCard({ question, questionNumber }) {
   const questionType = question.question_type
