@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge'
 import { Volume2, Image as ImageIcon } from 'lucide-react'
 
 export default function TopicCard({ topic, index }) {
-  console.log(topic);
   const segments = topic.simplified_explanation || []
 
   return (

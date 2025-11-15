@@ -62,7 +62,8 @@ export default async function LessonDetailPage({ params }) {
         question_type,
         question,
         active,
-        created_at
+        created_at,
+        order
       )
     `)
     .eq('lesson_id', lessonId)
