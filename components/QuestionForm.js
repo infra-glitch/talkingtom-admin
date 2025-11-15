@@ -608,6 +608,105 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
           {questionType === 'MATCHING' && renderMatchingForm()}
           {questionType === 'IDENTIFY' && renderIdentifyForm()}
 
+          {/* Hints Section (Optional for all question types) */}
+          {questionType && (
+            <div className="mt-6 pt-6 border-t space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-lg">💡</span>
+                <h3 className="text-sm font-semibold">Hints (Optional)</h3>
+              </div>
+
+              <div>
+                <Label htmlFor="hint-text">Hint Text</Label>
+                <Textarea
+                  id="hint-text"
+                  value={hintText}
+                  onChange={(e) => setHintText(e.target.value)}
+                  placeholder="Enter hint text to help students"
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label>Topic Pills</Label>
+                <div className="space-y-2 mt-2">
+                  {topicPills.map((pill, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={pill}
+                        onChange={(e) => {
+                          const newPills = [...topicPills]
+                          newPills[index] = e.target.value
+                          setTopicPills(newPills)
+                        }}
+                        placeholder={`Topic reference ${index + 1}`}
+                      />
+                      {topicPills.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setTopicPills(topicPills.filter((_, i) => i !== index))}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setTopicPills([...topicPills, ''])}
+                  className="mt-2"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Topic Pill
+                </Button>
+              </div>
+
+              <div>
+                <Label>Keyword Pills</Label>
+                <div className="space-y-2 mt-2">
+                  {keywordPills.map((pill, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        value={pill}
+                        onChange={(e) => {
+                          const newPills = [...keywordPills]
+                          newPills[index] = e.target.value
+                          setKeywordPills(newPills)
+                        }}
+                        placeholder={`Keyword ${index + 1}`}
+                      />
+                      {keywordPills.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => setKeywordPills(keywordPills.filter((_, i) => i !== index))}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setKeywordPills([...keywordPills, ''])}
+                  className="mt-2"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Keyword Pill
+                </Button>
+              </div>
+            </div>
+          )}
+
           <div className="flex gap-2 pt-4">
             <Button type="submit" disabled={saving || !questionType}>
               {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
