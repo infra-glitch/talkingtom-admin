@@ -22,7 +22,7 @@ export async function PUT(request, { params }) {
   try {
     const { id } = params
     const body = await request.json()
-    const { question_type, question } = body
+    const { question_type, question, answer, order } = body
 
     if (!question_type || !question) {
       return NextResponse.json(
@@ -32,9 +32,10 @@ export async function PUT(request, { params }) {
     }
 
     const questionData = await db.updateQuizQuestion(id, {
-      //quiz_section_id: section_id,
-      question: question,
-      active: true,
+      question_type,
+      question,
+      answer,
+      order: order || 1,
       updated_at: new Date().toISOString()
     })
     
