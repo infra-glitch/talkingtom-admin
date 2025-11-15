@@ -73,6 +73,13 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
 
     setQuestionType(type)
 
+    // Load hints if present (common for all question types)
+    if (data.hints) {
+      setHintText(data.hints.hint_text || '')
+      setTopicPills(data.hints.topic_pills && data.hints.topic_pills.length > 0 ? data.hints.topic_pills : [''])
+      setKeywordPills(data.hints.keyword_pills && data.hints.keyword_pills.length > 0 ? data.hints.keyword_pills : [''])
+    }
+
     switch (type) {
       case 'MCQ':
         setMcqText(data.question?.text || '')
