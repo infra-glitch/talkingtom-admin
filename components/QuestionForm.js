@@ -604,6 +604,22 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
             </Select>
           </div>
 
+          <div>
+            <Label htmlFor="order">Question Order *</Label>
+            <Input
+              id="order"
+              type="number"
+              value={order}
+              onChange={(e) => setOrder(e.target.value)}
+              placeholder="1"
+              min="1"
+              required
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Order in which this question appears in the section
+            </p>
+          </div>
+
           {questionType === 'MCQ' && renderMCQForm()}
           {questionType === 'BLANKS' && renderBlanksForm()}
           {(questionType === 'SHORT' || questionType === 'LONG') && renderTextForm()}
