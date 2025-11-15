@@ -284,6 +284,8 @@ function MatchingQuestion({ data }) {
           })}
         </div>
       </div>
+
+      <HintsSection hints={data.hints} />
     </div>
   )
 }
