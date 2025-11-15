@@ -199,6 +199,15 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
         return
     }
 
+    // Add hints if any field is provided
+    if (hintText || topicPills.some(p => p.trim()) || keywordPills.some(p => p.trim())) {
+      questionData.hints = {
+        hint_text: hintText,
+        topic_pills: topicPills.filter(p => p.trim()),
+        keyword_pills: keywordPills.filter(p => p.trim())
+      }
+    }
+
     try {
       setSaving(true)
       const url = editQuestion 
