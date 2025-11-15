@@ -212,6 +212,8 @@ function TextQuestion({ data, type }) {
           </div>
         </div>
       )}
+
+      <HintsSection hints={data.hints} />
     </div>
   )
 }
@@ -313,6 +315,8 @@ function IdentifyQuestion({ data }) {
           </div>
         </div>
       )}
+
+      <HintsSection hints={data.hints} />
     </div>
   )
 }
