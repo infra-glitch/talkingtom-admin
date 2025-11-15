@@ -56,6 +56,11 @@ export default function QuestionForm({ sectionId, onSuccess, onCancel, editQuest
   const [identifyAnswer, setIdentifyAnswer] = useState('')
   const [identifyTopicRefs, setIdentifyTopicRefs] = useState('')
 
+  // Hints State (shared across all question types)
+  const [hintText, setHintText] = useState('')
+  const [topicPills, setTopicPills] = useState([''])
+  const [keywordPills, setKeywordPills] = useState([''])
+
   useEffect(() => {
     if (editQuestion) {
       loadEditData(editQuestion)
